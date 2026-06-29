@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: playio_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: playio
+      POSTGRES_PASSWORD: playio123
+      POSTGRES_DB: playio_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - playio_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  playio_postgres_data:
