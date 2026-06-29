@@ -7,6 +7,7 @@ body {
   background-color: #09090b;
   color: white;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 * {
@@ -14,6 +15,12 @@ body {
 }
 
 a {
-  text-decoration: none;
   color: inherit;
+  text-decoration: none;
+}
+
+input,
+select,
+button {
+  font: inherit;
 }
