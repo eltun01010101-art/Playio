@@ -11,7 +11,7 @@ export default function Navbar() {
 
   function checkAuth() {
     const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token);
+    setIsLoggedIn(Boolean(token));
   }
 
   useEffect(() => {
@@ -34,7 +34,6 @@ export default function Navbar() {
     setOpen(false);
 
     window.dispatchEvent(new Event('authChanged'));
-
     router.push('/login');
   }
 
@@ -46,14 +45,19 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/95 text-white backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <Link href="/" className="text-xl font-black text-violet-500 sm:text-2xl">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+        <Link
+          href="/"
+          onClick={() => setOpen(false)}
+          className="text-xl font-black text-violet-500 sm:text-2xl"
+        >
           Playio.az
         </Link>
 
         <button
-          onClick={() => setOpen(!open)}
-          className="rounded-lg border border-zinc-700 px-3 py-2 text-sm md:hidden"
+          type="button"
+          onClick={() => setOpen((value) => !value)}
+          className="min-h-11 rounded-xl border border-zinc-700 px-4 py-2 text-sm font-bold md:hidden"
         >
           {open ? 'Bağla' : 'Menyu'}
         </button>
@@ -72,8 +76,9 @@ export default function Navbar() {
               </Link>
 
               <button
+                type="button"
                 onClick={logout}
-                className="rounded-lg bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-700"
+                className="rounded-xl bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-700"
               >
                 Çıxış
               </button>
@@ -84,7 +89,10 @@ export default function Navbar() {
                 Login
               </Link>
 
-              <Link href="/register" className="hover:text-white">
+              <Link
+                href="/register"
+                className="rounded-xl bg-violet-600 px-4 py-2 font-bold text-white hover:bg-violet-700"
+              >
                 Register
               </Link>
             </>
@@ -94,13 +102,13 @@ export default function Navbar() {
 
       {open && (
         <div className="border-t border-zinc-800 px-4 pb-4 md:hidden">
-          <div className="flex flex-col gap-3 rounded-xl bg-zinc-900 p-4">
+          <div className="mt-3 flex flex-col gap-2 rounded-2xl border border-zinc-800 bg-zinc-900 p-3">
             {publicLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="rounded-lg px-3 py-2 text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                className="min-h-11 rounded-xl px-4 py-3 text-zinc-300 hover:bg-zinc-800 hover:text-white"
               >
                 {link.label}
               </Link>
@@ -111,14 +119,15 @@ export default function Navbar() {
                 <Link
                   href="/dashboard"
                   onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2 text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                  className="min-h-11 rounded-xl px-4 py-3 text-zinc-300 hover:bg-zinc-800 hover:text-white"
                 >
                   Dashboard
                 </Link>
 
                 <button
+                  type="button"
                   onClick={logout}
-                  className="rounded-lg bg-red-600 px-3 py-2 text-left font-bold text-white hover:bg-red-700"
+                  className="min-h-11 rounded-xl bg-red-600 px-4 py-3 text-left font-bold text-white hover:bg-red-700"
                 >
                   Çıxış
                 </button>
@@ -128,7 +137,7 @@ export default function Navbar() {
                 <Link
                   href="/login"
                   onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2 text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                  className="min-h-11 rounded-xl px-4 py-3 text-zinc-300 hover:bg-zinc-800 hover:text-white"
                 >
                   Login
                 </Link>
@@ -136,7 +145,7 @@ export default function Navbar() {
                 <Link
                   href="/register"
                   onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2 text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                  className="min-h-11 rounded-xl bg-violet-600 px-4 py-3 font-bold text-white hover:bg-violet-700"
                 >
                   Register
                 </Link>

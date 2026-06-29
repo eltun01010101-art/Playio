@@ -23,12 +23,21 @@ export default function DashboardPage() {
       return;
     }
 
-    setUser(JSON.parse(savedUser));
+    try {
+      setUser(JSON.parse(savedUser));
+    } catch {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      router.push('/login');
+    }
   }, [router]);
 
   function logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+
+    window.dispatchEvent(new Event('authChanged'));
+
     router.push('/login');
   }
 
@@ -40,6 +49,7 @@ export default function DashboardPage() {
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-violet-500">
               Playio.az
             </p>
+
             <h1 className="mt-2 text-3xl font-black sm:text-4xl">
               Dashboard
             </h1>
@@ -47,7 +57,7 @@ export default function DashboardPage() {
 
           <button
             onClick={logout}
-            className="rounded-xl bg-red-600 px-5 py-3 font-bold transition hover:bg-red-700"
+            className="w-full rounded-xl bg-red-600 px-5 py-3 font-bold transition hover:bg-red-700 sm:w-auto"
           >
             Çıxış
           </button>
@@ -57,17 +67,27 @@ export default function DashboardPage() {
           <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5 sm:p-8">
             <h2 className="text-2xl font-bold">Profil</h2>
 
-            <div className="mt-4 grid gap-3 text-zinc-300 sm:grid-cols-2">
-              <p>
-                <span className="text-zinc-500">Username:</span>{' '}
-                {user.username}
-              </p>
-              <p>
-                <span className="text-zinc-500">Email:</span> {user.email}
-              </p>
-              <p>
-                <span className="text-zinc-500">Role:</span> {user.role}
-              </p>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              <div className="rounded-xl bg-zinc-800 p-4">
+                <p className="text-sm text-zinc-500">Username</p>
+                <p className="mt-1 break-words text-lg font-semibold">
+                  {user.username}
+                </p>
+              </div>
+
+              <div className="rounded-xl bg-zinc-800 p-4">
+                <p className="text-sm text-zinc-500">Email</p>
+                <p className="mt-1 break-all text-lg font-semibold">
+                  {user.email}
+                </p>
+              </div>
+
+              <div className="rounded-xl bg-zinc-800 p-4 sm:col-span-2">
+                <p className="text-sm text-zinc-500">Role</p>
+                <p className="mt-1 text-lg font-semibold capitalize">
+                  {user.role}
+                </p>
+              </div>
             </div>
           </div>
         )}

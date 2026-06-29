@@ -1,5 +1,6 @@
 'use client';
 
+import toast from 'react-hot-toast';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { loginUser } from '../../lib/api';
@@ -9,22 +10,32 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    const data = await loginUser({ email, password });
+    setLoading(true);
 
-    if (data.accessToken) {
-      localStorage.setItem('token', data.accessToken);
-      localStorage.setItem('user', JSON.stringify(data.user));
+    try {
+      const data = await loginUser({ email, password });
 
-      window.dispatchEvent(new Event('authChanged'));
+      if (data.accessToken) {
+        localStorage.setItem('token', data.accessToken);
+        localStorage.setItem('user', JSON.stringify(data.user));
 
-      alert('Giriş uğurlu oldu!');
-      router.push('/dashboard');
-    } else {
-      alert('Email və ya şifrə yanlışdır');
+        window.dispatchEvent(new Event('authChanged'));
+
+        toast.success('Giriş uğurlu oldu!');
+        router.push('/dashboard');
+      } else {
+        toast.error('Email və ya şifrə yanlışdır');
+      }
+    } catch (error) {
+      toast.error('Giriş zamanı xəta baş verdi');
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -39,9 +50,11 @@ export default function LoginPage() {
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-violet-500">
               Playio.az
             </p>
+
             <h1 className="mt-2 text-3xl font-black sm:text-4xl">
               Daxil ol
             </h1>
+
             <p className="mt-2 text-sm text-zinc-400">
               Hesabına daxil ol və Playio dashboard-a keç.
             </p>
@@ -50,7 +63,8 @@ export default function LoginPage() {
           <input
             type="email"
             placeholder="Email"
-            className="w-full rounded-xl border border-zinc-700 bg-zinc-800 p-3 outline-none focus:border-violet-500"
+            disabled={loading}
+            className="w-full rounded-xl border border-zinc-700 bg-zinc-800 p-3 outline-none focus:border-violet-500 disabled:opacity-60"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -58,13 +72,17 @@ export default function LoginPage() {
           <input
             type="password"
             placeholder="Şifrə"
-            className="w-full rounded-xl border border-zinc-700 bg-zinc-800 p-3 outline-none focus:border-violet-500"
+            disabled={loading}
+            className="w-full rounded-xl border border-zinc-700 bg-zinc-800 p-3 outline-none focus:border-violet-500 disabled:opacity-60"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button className="w-full rounded-xl bg-violet-600 p-3 font-bold transition hover:bg-violet-700">
-            Daxil ol
+          <button
+            disabled={loading}
+            className="w-full rounded-xl bg-violet-600 p-3 font-bold transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {loading ? 'Daxil olunur...' : 'Daxil ol'}
           </button>
         </form>
       </div>
