@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast';
 
 import './globals.css';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 export const metadata: Metadata = {
   title: 'Playio.az',
@@ -16,10 +17,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="az">
-      <body className="min-h-screen bg-zinc-950 text-white">
+      <body className="flex min-h-screen flex-col bg-zinc-950 text-white">
         <Navbar />
 
-        {children}
+        <main className="flex-1">
+          {children}
+        </main>
+
+        <Footer />
 
         <Toaster
           position="top-center"
