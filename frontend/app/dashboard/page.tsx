@@ -33,21 +33,42 @@ export default function DashboardPage() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white p-8">
-      <div className="max-w-4xl mx-auto space-y-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-4xl font-bold">Playio Dashboard</h1>
-          <button onClick={logout} className="rounded-lg bg-red-600 px-4 py-2 font-bold">
+    <main className="min-h-screen bg-zinc-950 px-4 py-8 text-white sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-5xl space-y-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-violet-500">
+              Playio.az
+            </p>
+            <h1 className="mt-2 text-3xl font-black sm:text-4xl">
+              Dashboard
+            </h1>
+          </div>
+
+          <button
+            onClick={logout}
+            className="rounded-xl bg-red-600 px-5 py-3 font-bold transition hover:bg-red-700"
+          >
             Çıxış
           </button>
         </div>
 
         {user && (
-          <div className="rounded-xl bg-zinc-900 p-6 space-y-2">
+          <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5 sm:p-8">
             <h2 className="text-2xl font-bold">Profil</h2>
-            <p>Username: {user.username}</p>
-            <p>Email: {user.email}</p>
-            <p>Role: {user.role}</p>
+
+            <div className="mt-4 grid gap-3 text-zinc-300 sm:grid-cols-2">
+              <p>
+                <span className="text-zinc-500">Username:</span>{' '}
+                {user.username}
+              </p>
+              <p>
+                <span className="text-zinc-500">Email:</span> {user.email}
+              </p>
+              <p>
+                <span className="text-zinc-500">Role:</span> {user.role}
+              </p>
+            </div>
           </div>
         )}
       </div>

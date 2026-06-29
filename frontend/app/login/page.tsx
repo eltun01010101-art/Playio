@@ -18,6 +18,9 @@ export default function LoginPage() {
     if (data.accessToken) {
       localStorage.setItem('token', data.accessToken);
       localStorage.setItem('user', JSON.stringify(data.user));
+
+      window.dispatchEvent(new Event('authChanged'));
+
       alert('Giriş uğurlu oldu!');
       router.push('/dashboard');
     } else {
@@ -26,30 +29,45 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-zinc-950 text-white">
-      <form onSubmit={handleSubmit} className="w-full max-w-md rounded-xl bg-zinc-900 p-6 space-y-4">
-        <h1 className="text-3xl font-bold">Playio Login</h1>
+    <main className="min-h-screen bg-zinc-950 px-4 py-10 text-white sm:px-6">
+      <div className="mx-auto flex min-h-[75vh] max-w-md items-center">
+        <form
+          onSubmit={handleSubmit}
+          className="w-full space-y-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-5 shadow-xl sm:p-8"
+        >
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-violet-500">
+              Playio.az
+            </p>
+            <h1 className="mt-2 text-3xl font-black sm:text-4xl">
+              Daxil ol
+            </h1>
+            <p className="mt-2 text-sm text-zinc-400">
+              Hesabına daxil ol və Playio dashboard-a keç.
+            </p>
+          </div>
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full p-3 rounded-lg bg-zinc-800"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full rounded-xl border border-zinc-700 bg-zinc-800 p-3 outline-none focus:border-violet-500"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <input
-          type="password"
-          placeholder="Şifrə"
-          className="w-full p-3 rounded-lg bg-zinc-800"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          <input
+            type="password"
+            placeholder="Şifrə"
+            className="w-full rounded-xl border border-zinc-700 bg-zinc-800 p-3 outline-none focus:border-violet-500"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-        <button className="w-full p-3 rounded-lg bg-violet-600 font-bold">
-          Daxil ol
-        </button>
-      </form>
+          <button className="w-full rounded-xl bg-violet-600 p-3 font-bold transition hover:bg-violet-700">
+            Daxil ol
+          </button>
+        </form>
+      </div>
     </main>
   );
 }

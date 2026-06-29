@@ -26,10 +26,7 @@ export default function TeamsPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    await createTeam({
-      name,
-      game,
-    });
+    await createTeam({ name, game });
 
     setName('');
     setGame('');
@@ -38,48 +35,54 @@ export default function TeamsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white p-8">
-      <div className="mx-auto max-w-5xl">
-        <h1 className="mb-8 text-4xl font-bold">
-          Playio Teams
-        </h1>
+    <main className="min-h-screen bg-zinc-950 px-4 py-8 text-white sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-8">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-violet-500">
+            Playio.az
+          </p>
+          <h1 className="mt-2 text-3xl font-black sm:text-4xl">
+            Teams
+          </h1>
+          <p className="mt-2 max-w-2xl text-zinc-400">
+            Komandanı yarat və turnirlərdə iştirak etməyə hazırlaş.
+          </p>
+        </div>
 
         <form
           onSubmit={handleSubmit}
-          className="mb-8 space-y-4 rounded-xl bg-zinc-900 p-6"
+          className="mb-8 space-y-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-5 sm:p-8"
         >
           <input
-            className="w-full rounded-lg bg-zinc-800 p-3"
+            className="w-full rounded-xl border border-zinc-700 bg-zinc-800 p-3 outline-none focus:border-violet-500"
             placeholder="Komanda adı"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
 
           <input
-            className="w-full rounded-lg bg-zinc-800 p-3"
-            placeholder="Oyun (CS2, Valorant, PUBG...)"
+            className="w-full rounded-xl border border-zinc-700 bg-zinc-800 p-3 outline-none focus:border-violet-500"
+            placeholder="Oyun: CS2, Valorant, PUBG..."
             value={game}
             onChange={(e) => setGame(e.target.value)}
           />
 
-          <button
-            className="rounded-lg bg-violet-600 px-6 py-3 font-bold"
-          >
+          <button className="w-full rounded-xl bg-violet-600 px-6 py-3 font-bold transition hover:bg-violet-700 sm:w-auto">
             Komanda yarat
           </button>
         </form>
 
-        <div className="space-y-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {teams.map((team) => (
             <div
               key={team.id}
-              className="rounded-xl bg-zinc-900 p-5"
+              className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5"
             >
-              <h2 className="text-2xl font-bold">
+              <h2 className="break-words text-2xl font-bold">
                 {team.name}
               </h2>
 
-              <p className="text-zinc-400">
+              <p className="mt-2 text-zinc-400">
                 Oyun: {team.game}
               </p>
             </div>
