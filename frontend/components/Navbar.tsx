@@ -75,6 +75,10 @@ export default function Navbar() {
                 Dashboard
               </Link>
 
+              <Link href="/profile" className="hover:text-white">
+                Profile
+              </Link>
+
               <button
                 type="button"
                 onClick={logout}
@@ -122,6 +126,14 @@ export default function Navbar() {
                   className="min-h-11 rounded-xl px-4 py-3 text-zinc-300 hover:bg-zinc-800 hover:text-white"
                 >
                   Dashboard
+                </Link>
+
+                <Link
+                  href="/profile"
+                  onClick={() => setOpen(false)}
+                  className="min-h-11 rounded-xl px-4 py-3 text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                >
+                  Profile
                 </Link>
 
                 <button
