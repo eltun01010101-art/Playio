@@ -4,14 +4,28 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+type User = {
+  role?: string;
+};
+
 export default function Navbar() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   function checkAuth() {
     const token = localStorage.getItem('token');
+    const savedUser = localStorage.getItem('user');
+
     setIsLoggedIn(Boolean(token));
+
+    try {
+      const user: User | null = savedUser ? JSON.parse(savedUser) : null;
+      setIsAdmin(user?.role === 'admin');
+    } catch {
+      setIsAdmin(false);
+    }
   }
 
   useEffect(() => {
@@ -31,6 +45,7 @@ export default function Navbar() {
     localStorage.removeItem('user');
 
     setIsLoggedIn(false);
+    setIsAdmin(false);
     setOpen(false);
 
     window.dispatchEvent(new Event('authChanged'));
@@ -39,8 +54,10 @@ export default function Navbar() {
 
   const publicLinks = [
     { href: '/', label: 'Home' },
+    { href: '/games', label: 'Games' },
     { href: '/teams', label: 'Teams' },
     { href: '/tournaments', label: 'Tournaments' },
+    
   ];
 
   return (
@@ -78,6 +95,18 @@ export default function Navbar() {
               <Link href="/profile" className="hover:text-white">
                 Profile
               </Link>
+
+              {isAdmin && (
+                <>
+                  <Link href="/admin" className="hover:text-white">
+                    Admin
+                  </Link>
+
+                  <Link href="/admin/games" className="hover:text-white">
+                    Games
+                  </Link>
+                </>
+              )}
 
               <button
                 type="button"
@@ -135,6 +164,26 @@ export default function Navbar() {
                 >
                   Profile
                 </Link>
+
+                {isAdmin && (
+                  <>
+                    <Link
+                      href="/admin"
+                      onClick={() => setOpen(false)}
+                      className="min-h-11 rounded-xl px-4 py-3 text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                    >
+                      Admin
+                    </Link>
+
+                    <Link
+                      href="/admin/games"
+                      onClick={() => setOpen(false)}
+                      className="min-h-11 rounded-xl px-4 py-3 text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                    >
+                      Games
+                    </Link>
+                  </>
+                )}
 
                 <button
                   type="button"

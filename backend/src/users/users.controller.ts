@@ -4,7 +4,9 @@ import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+  ) {}
 
   @Get()
   findAll() {
@@ -15,6 +17,8 @@ export class UsersController {
   create(
     @Body()
     body: {
+      firstName: string;
+      lastName: string;
       username: string;
       email: string;
       password: string;

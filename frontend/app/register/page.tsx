@@ -8,6 +8,8 @@ import { loginUser, registerUser } from '../../lib/api';
 export default function RegisterPage() {
   const router = useRouter();
 
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,10 +18,32 @@ export default function RegisterPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
+    if (
+      !firstName.trim() ||
+      !lastName.trim() ||
+      !username.trim() ||
+      !email.trim() ||
+      !password.trim()
+    ) {
+      toast.error('Bütün xanaları doldur');
+      return;
+    }
+
     setLoading(true);
 
     try {
-      await registerUser({ username, email, password });
+      const registerData = await registerUser({
+        firstName,
+        lastName,
+        username,
+        email,
+        password,
+      });
+
+      if (registerData.message || registerData.statusCode) {
+        toast.error(registerData.message || 'Qeydiyyat alınmadı');
+        return;
+      }
 
       const loginData = await loginUser({ email, password });
 
@@ -62,6 +86,24 @@ export default function RegisterPage() {
             <p className="mt-2 text-sm text-zinc-400">
               Komanda yaratmaq və turnirlərə qoşulmaq üçün hesab yarat.
             </p>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            <input
+              className="w-full rounded-xl border border-zinc-700 bg-zinc-800 p-3 outline-none focus:border-violet-500 disabled:opacity-60"
+              placeholder="Ad"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              disabled={loading}
+            />
+
+            <input
+              className="w-full rounded-xl border border-zinc-700 bg-zinc-800 p-3 outline-none focus:border-violet-500 disabled:opacity-60"
+              placeholder="Soyad"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              disabled={loading}
+            />
           </div>
 
           <input

@@ -3,7 +3,10 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  ManyToOne,
 } from 'typeorm';
+
+import { User } from '../users/user.entity';
 
 @Entity('teams')
 export class Team {
@@ -18,6 +21,13 @@ export class Team {
 
   @Column()
   game: string;
+
+  @ManyToOne(() => User, {
+    eager: true,
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
+  owner: User | null;
 
   @CreateDateColumn()
   createdAt: Date;

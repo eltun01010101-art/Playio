@@ -15,13 +15,20 @@ export class AuthService {
     const user = await this.usersService.findByEmail(data.email);
 
     if (!user) {
-      throw new UnauthorizedException('Email və ya şifrə yanlışdır');
+      throw new UnauthorizedException(
+        'Email və ya şifrə yanlışdır',
+      );
     }
 
-    const isPasswordValid = await bcrypt.compare(data.password, user.password);
+    const isPasswordValid = await bcrypt.compare(
+      data.password,
+      user.password,
+    );
 
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Email və ya şifrə yanlışdır');
+      throw new UnauthorizedException(
+        'Email və ya şifrə yanlışdır',
+      );
     }
 
     const token = await this.jwtService.signAsync({
@@ -32,8 +39,11 @@ export class AuthService {
 
     return {
       accessToken: token,
+
       user: {
         id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
         username: user.username,
         email: user.email,
         role: user.role,

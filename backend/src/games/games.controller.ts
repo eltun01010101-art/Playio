@@ -13,8 +13,8 @@ import {
 
 import { Request } from 'express';
 
-import { TournamentsService } from './tournaments.service';
-import { TournamentStatus } from './tournament.entity';
+import { GamesService } from './games.service';
+import { GameStatus } from './game.entity';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 type AuthRequest = Request & {
@@ -25,74 +25,85 @@ type AuthRequest = Request & {
   };
 };
 
-@Controller('tournaments')
-export class TournamentsController {
+@Controller('games')
+export class GamesController {
   constructor(
-    private readonly tournamentsService: TournamentsService,
+    private readonly gamesService: GamesService,
   ) {}
 
   @Get()
   findAll() {
-    return this.tournamentsService.findAll();
+    return this.gamesService.findAll();
+  }
+
+  @Get('active')
+  findActive() {
+    return this.gamesService.findActive();
   }
 
   @Post()
   @UseGuards(JwtAuthGuard)
   create(
     @Req() req: AuthRequest,
+
     @Body()
     body: {
-      title: string;
-      game: string;
-      prizePool: number;
-      maxTeams: number;
-      status?: TournamentStatus;
+      name: string;
+      slug: string;
+      image?: string;
+      genre?: string;
+      platform?: string;
+      status?: GameStatus;
     },
   ) {
     if (req.user.role !== 'admin') {
       throw new ForbiddenException(
-        'Turnir yaratmaq üçün admin olmalısan',
+        'Oyun yaratmaq üçün admin olmalısan',
       );
     }
 
-    return this.tournamentsService.create(body);
+    return this.gamesService.create(body);
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   update(
     @Req() req: AuthRequest,
+
     @Param('id') id: string,
+
     @Body()
     body: {
-      title?: string;
-      game?: string;
-      prizePool?: number;
-      maxTeams?: number;
-      status?: TournamentStatus;
+      name?: string;
+      slug?: string;
+      image?: string;
+      genre?: string;
+      platform?: string;
+      status?: GameStatus;
     },
   ) {
     if (req.user.role !== 'admin') {
       throw new ForbiddenException(
-        'Turniri dəyişmək üçün admin olmalısan',
+        'Oyunu dəyişmək üçün admin olmalısan',
       );
     }
 
-    return this.tournamentsService.update(id, body);
+    return this.gamesService.update(id, body);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   remove(
     @Req() req: AuthRequest,
+
     @Param('id') id: string,
   ) {
     if (req.user.role !== 'admin') {
       throw new ForbiddenException(
-        'Turniri silmək üçün admin olmalısan',
+        'Oyunu silmək üçün admin olmalısan',
       );
     }
 
-    return this.tournamentsService.remove(id);
+    return this.gamesService.remove(id);
   }
 }

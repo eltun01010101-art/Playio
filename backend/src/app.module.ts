@@ -10,6 +10,9 @@ import { AuthModule } from './auth/auth.module';
 import { TeamsModule } from './teams/teams.module';
 import { TournamentsModule } from './tournaments/tournaments.module';
 import { TournamentEntriesModule } from './tournament-entries/tournament-entries.module';
+import { MatchesModule } from './matches/matches.module';
+import { GamesModule } from './games/games.module';
+import { GameRoomsModule } from './game-rooms/game-rooms.module';
 
 @Module({
   imports: [
@@ -36,6 +39,9 @@ import { TournamentEntriesModule } from './tournament-entries/tournament-entries
     TeamsModule,
     TournamentsModule,
     TournamentEntriesModule,
+    MatchesModule,
+    GamesModule,
+    GameRoomsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

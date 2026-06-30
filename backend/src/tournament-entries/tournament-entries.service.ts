@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -33,10 +38,13 @@ export class TournamentEntriesService {
     });
   }
 
-  async joinTournament(data: {
-    tournamentId: string;
-    teamId: string;
-  }) {
+  async joinTournament(
+    userId: string,
+    data: {
+      tournamentId: string;
+      teamId: string;
+    },
+  ) {
     const tournament = await this.tournamentsRepository.findOne({
       where: { id: data.tournamentId },
     });
@@ -45,12 +53,24 @@ export class TournamentEntriesService {
       throw new NotFoundException('Turnir tapılmadı');
     }
 
+    if (tournament.status !== 'upcoming') {
+      throw new BadRequestException(
+        'Bu turnirə qoşulmaq mümkün deyil',
+      );
+    }
+
     const team = await this.teamsRepository.findOne({
       where: { id: data.teamId },
     });
 
     if (!team) {
       throw new NotFoundException('Komanda tapılmadı');
+    }
+
+    if (team.owner?.id !== userId) {
+      throw new ForbiddenException(
+        'Bu komandanı turnirə qoşmaq icazən yoxdur',
+      );
     }
 
     const existingEntry = await this.entriesRepository.findOne({

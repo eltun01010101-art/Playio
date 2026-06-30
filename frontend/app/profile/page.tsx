@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 
 type User = {
   id: string;
+  firstName?: string;
+  lastName?: string;
   username: string;
   email: string;
   role: string;
@@ -42,6 +44,11 @@ export default function ProfilePage() {
     );
   }
 
+  const fullName =
+    user.firstName && user.lastName
+      ? `${user.firstName} ${user.lastName}`
+      : user.username;
+
   return (
     <main className="min-h-screen bg-zinc-950 px-4 py-8 text-white sm:px-6 lg:px-8">
       <div className="mx-auto max-w-4xl space-y-6">
@@ -65,20 +72,26 @@ export default function ProfilePage() {
           <div className="p-5 sm:p-8">
             <div className="-mt-16 flex flex-col gap-5 sm:flex-row sm:items-end">
               <div className="flex h-28 w-28 shrink-0 items-center justify-center rounded-full border-4 border-zinc-900 bg-violet-600 text-5xl font-black shadow-xl">
-                {user.username.charAt(0).toUpperCase()}
+                {fullName.charAt(0).toUpperCase()}
               </div>
 
               <div className="min-w-0 pb-1">
                 <h2 className="break-words text-3xl font-black">
-                  {user.username}
+                  {fullName}
                 </h2>
+
+                <p className="mt-2 text-zinc-400">
+                  @{user.username}
+                </p>
 
                 <p className="mt-1 break-all text-zinc-400">
                   {user.email}
                 </p>
 
                 <p className="mt-3 inline-flex rounded-full bg-zinc-800 px-4 py-2 text-sm font-bold capitalize text-zinc-300">
-                  {user.role}
+                  {user.role === 'admin'
+                    ? 'Administrator'
+                    : 'İstifadəçi'}
                 </p>
               </div>
             </div>
